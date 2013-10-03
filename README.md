@@ -5,9 +5,9 @@ Add extra tokens to affiliates notifications.
 
 Now you can use:
 
-	[user_username]
-	[user_email]
-  [user_displayname]
-	
-	[order_id]
-  [order_total]
+[user_username]<br>
+[user_email]<br>
+[user_displayname]<br>
+
+[order_id]<br>
+[order_total]

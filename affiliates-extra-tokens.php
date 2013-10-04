@@ -74,9 +74,7 @@ class Affiliates_Extra_Tokens_Plugin {
 					$referral = $referrals[0];
 					
 					$userdata = get_userdata($referral->user_id);
-					$order_id = $referral->post_id;
-					$order = new WC_Order( $order_id );
-
+					
 					// $userdata & $order contain information
 					if ($userdata) {
 						$data['user_username'] = $userdata->user_nicename;
@@ -84,10 +82,19 @@ class Affiliates_Extra_Tokens_Plugin {
 						$data['user_displayname'] = $userdata->display_name;
 						// You can add more user data here
 					}
-					if ($order) {
-						$data['order_id'] = $order_id;
-						$data['order_total'] = $order->get_total();
-						// You can add more order data here
+					
+					// woocommerce
+					$active_plugins = get_option( 'active_plugins', array() );
+					$woocommerce_is_active = in_array( 'woocommerce/woocommerce.php', $active_plugins );
+					if ( $woocommerce_is_active ) {
+						$order_id = $referral->post_id;
+						$order = new WC_Order( $order_id );
+	
+						if ($order) {
+							$data['order_id'] = $order_id;
+							$data['order_total'] = $order->get_total();
+							// You can add more order data here
+						}
 					}
 					
 				}

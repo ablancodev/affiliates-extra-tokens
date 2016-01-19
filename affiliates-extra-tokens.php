@@ -64,7 +64,8 @@ class Affiliates_Extra_Tokens_Plugin {
 	
 	public static function affiliates_notifications_tokens ($data) {
 		global $wpdb;
-		
+		global $create_affiliate_userdata;
+
 		if (isset($data['referral_id'])) {
 			$referral_id = $data['referral_id'];
 			$referral = null;
@@ -82,6 +83,10 @@ class Affiliates_Extra_Tokens_Plugin {
 						$data['user_displayname'] = $userdata->display_name;
 						// You can add more user data here
 					}
+					
+					// affiliate user data
+					// 'aff_field_name' is a custom field in the affiliates registration form.
+					$data['aff_field_name'] = $create_affiliate_userdata['aff_field_name'];
 					
 					// woocommerce
 					$active_plugins = get_option( 'active_plugins', array() );

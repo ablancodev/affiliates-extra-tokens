@@ -21,7 +21,7 @@
  * Plugin Name: Affiliates Extra Tokens
  * Plugin URI: http://www.eggemplo.com
  * Description: Add extra tokens to affiliates notifications.
- * Version: 1.0
+ * Version: 1.0.1
  * Author: eggemplo
  * Author URI: http://www.eggemplo.com
  * License: GPLv3
@@ -96,16 +96,44 @@ class Affiliates_Extra_Tokens_Plugin {
 						$order = new WC_Order( $order_id );
 	
 						if ($order) {
+							$order_items = '';
 							$data['order_id'] = $order_id;
 							$data['order_total'] = $order->get_total();
+							$data['customer_first_name'] = $order->get_billing_first_name();
+							$data['customer_last_name'] = $order->get_billing_last_name();
+							if ( sizeof( $order->get_items() ) > 0 ) {
+								foreach ( $order->get_items() as $item ) {
+									if ( $product = self::get_the_product_from_item( $item ) ) {
+										$order_items .= '<a href=" ' . get_permalink( $product->get_id() ) . ' " >';
+										$order_items .= $product->get_name();
+										$order_items .= '</a>';
+										$order_items .= ' ';
+									}
+								}
+								$data['order_items'] = $order_items;
+							}
 							// You can add more order data here
 						}
 					}
-					
 				}
 			}
 		}
 		return $data;
+	}
+
+	/**
+	 * Retrieve the product from an order item
+	 *
+	 * @param WC_Order_Item_Product $item
+	 * @return WC_Product|null
+	 */
+	public static function get_the_product_from_item( $item ) {
+	    if( method_exists( 'WC_Order_Item_Product', 'get_product_id' ) ) {
+	        $product_id = $item->get_variation_id() ? $item->get_variation_id() : $item->get_product_id();
+	    } else {
+	        $product_id = $item->variation_id ? $item->variation_id : $item->product_id;
+	    }
+	    return new WC_Product( $product_id ) ? new WC_Product( $product_id ) : null;
 	}
 }
 Affiliates_Extra_Tokens_Plugin::init();

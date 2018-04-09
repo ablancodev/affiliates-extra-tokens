@@ -10,4 +10,8 @@ Now you can use:
 [user_displayname]<br>
 
 [order_id]<br>
-[order_total]
+[order_total]<br>
+[order_items]<br>
+[customer_first_name]<br>
+[customer_last_name]<br>
+
